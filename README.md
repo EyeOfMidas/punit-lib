@@ -8,11 +8,23 @@ At the top of your test suite file, include the test autoloader.
 require_once("path/to/suite/autoload.php");
 ```
 
-##Running a test
+##Creating a test
+Create a test file (such as Test.php)
 ```PHP
 <?php
 require_once("../suite/autoload.php");
 $test = UnitTester::getInstance();
 $test->assertEqual(true, true);
 $test->report();
+```
+
+##Running a test
+```bash
+php Test.php
+```
+
+Will output
+```
+Pass 1/1
+
 ```
