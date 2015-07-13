@@ -58,9 +58,9 @@ class TestReporter
 		}
 		
 		$reportData = array();
-		$reportData['successTag'] = "test-pass";
-		$reportData['failTag'] = "test-fail";
-		$reportData['resultTag'] = $class;
+		$reportData['successtag'] = "test-pass";
+		$reportData['failtag'] = "test-fail";
+		$reportData['resulttag'] = $class;
 		$reportData['message'] = trim($this->report());
 		
 		$patterns = array();
@@ -68,7 +68,7 @@ class TestReporter
 		foreach ($uniqueKeys as $index => $key)
 		{
 			$patterns[] = "/{{" . $key . "}}/i";
-			$replacements[] = isset($reportData[$key]) ? $reportData[$key] : "";
+			$replacements[] = isset($reportData[strtolower($key)]) ? $reportData[strtolower($key)] : "";
 		}
 		return preg_replace($patterns, $replacements, $htmlTemplate . "\n");
 	}
