@@ -1,0 +1,13 @@
+.test-result {
+	padding: 5px;
+	margin: 5px;
+	color: white;
+}
+
+.test-fail {
+	background-color: red;
+}
+
+.test-pass {
+	background-color: green;
+}
