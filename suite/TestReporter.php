@@ -30,33 +30,47 @@ class TestReporter
 		if($this->testsPass)
 		{
 			$output .= "Pass " . $this->testsCalled . "/" . $this->testsCalled . "\n";
-		} else {
-			$output .= "Pass " . ($this->testsCalled - $this->testsFailed) . "/" . $this->testsCalled. ": Failure: ";
-			foreach($this->debugLog as $log)
+		}
+		else
+		{
+			$output .= "Pass " . ($this->testsCalled - $this->testsFailed) . "/" . $this->testsCalled . ": Failure: ";
+			foreach ($this->debugLog as $log)
 			{
 				$output .= $log;
 				$output .= "\n";
 			}
 		}
 		$this->reset();
-		return $output;
+		return trim($output) . "\n";
 	}
-	
+
 	public function reportHTML()
 	{
-		$html = '<style type="text/css">'. file_get_contents(SUITE_PATH . "htmlReporter.css") . '</style>'."\n";
+		$htmlTemplate = file_get_contents(SUITE_PATH . "htmlReportTemplate.html");
+		$matches = array();
+		preg_match_all("/{{(.+?)}}/i", $htmlTemplate, $matches);
+		$uniqueKeys = array_unique($matches[1]);
+		
 		$class = "test-fail";
 		if($this->testsPass)
 		{
 			$class = "test-pass";
 		}
 		
-		$message = $this->report();
+		$reportData = array();
+		$reportData['successTag'] = "test-pass";
+		$reportData['failTag'] = "test-fail";
+		$reportData['resultTag'] = $class;
+		$reportData['message'] = trim($this->report());
 		
-		return $html . '<div class="' . $class . ' test-result">'."\n\t".
-				$message
-		."\n</div>\n";
-		
+		$patterns = array();
+		$replacements = array();
+		foreach ($uniqueKeys as $index => $key)
+		{
+			$patterns[] = "/{{" . $key . "}}/i";
+			$replacements[] = isset($reportData[$key]) ? $reportData[$key] : "";
+		}
+		return preg_replace($patterns, $replacements, $htmlTemplate . "\n");
 	}
 
 	public function logFailure($message)
@@ -65,7 +79,7 @@ class TestReporter
 		$this->debugLog[] = $message;
 		$this->testsFailed++;
 	}
-	
+
 	public function trackTest()
 	{
 		$this->testsCalled++;

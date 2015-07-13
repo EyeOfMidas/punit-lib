@@ -27,6 +27,11 @@ class UnitTester
 		$this->reporter->trackTest();
 		return $this->_assertEqual($expected, $actual);
 	}
+	
+	public function assertTrue($actual)
+	{
+		return $this->assertEqual(true, $actual);
+	}
 
 	private function typesMatch($expected, $actual)
 	{
