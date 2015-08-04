@@ -1,26 +1,27 @@
 <?php
-require_once(dirname(__FILE__). "/../suite/autoload.php");
-$test = UnitTester::getInstance();
+require_once(dirname(__FILE__). "/../PUnit.php");
 
 echo "--Tautology--\n";
-$test->assertTrue(true);
-$test->report();
+Test::assertTrue(true);
+Test::report();
 
+Test::reset();
 echo "--Multi with failure--\n";
-$test->assertEqual("abc", "123");
-$test->assertEqual(12.3, 12.3);
-$test->assertEqual(array("joe", "bloggs"), array("joe", "bloggs"));
-$test->report();
+Test::assertEqual("abc", "123");
+Test::assertEqual(12.3, 12.3);
+Test::assertEqual(array("joe", "bloggs"), array("joe", "bloggs"));
+Test::report();
 
+Test::reset();
 echo "--Deep array failure--\n";
 $expected = array("data" => true, "structure" => array("top" => 123, "left" => "abc"));
 $actual = array("data" => true, "structure" => array("top" => 123, "left" => "abcde"));
-$test->assertEqual($expected, $actual);
-$test->report();
+Test::assertEqual($expected, $actual);
+Test::report();
 
-
+Test::reset();
 echo "--HTML Report--\n";
 $expected = "bananas";
 $actual = "bananas";
-$test->assertEqual($expected, $actual);
-$test->reportHTML();
+Test::assertEqual($expected, $actual);
+Test::reportHTML();

@@ -18,7 +18,7 @@ class Test
 
 	public function assertTrue($actual)
 	{
-		return TestReporter::getInstance()->assertEqual(true, $actual);
+		return Test::assertEqual(true, $actual);
 	}
 
 	private static function typesMatch($expected, $actual)

@@ -1,5 +1,5 @@
 <?php
-define("SUITE_PATH", dirname(__FILE__) . "/");
+define("SUITE_PATH", dirname(__FILE__) . "/suite/");
 
 function test_autoloader($classname)
 {
