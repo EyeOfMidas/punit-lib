@@ -1,6 +1,7 @@
 <?php
 class TestReporter
 {
+	private static $instance;
 	private $debugLog;
 	private $testsPass;
 	private $testsCalled;
@@ -8,7 +9,11 @@ class TestReporter
 
 	public static function getInstance()
 	{
-		return new TestReporter();
+		if(!TestReporter::$instance)
+		{
+			TestReporter::$instance = new TestReporter();
+		}
+		return TestReporter::$instance;
 	}
 
 	private function __construct()

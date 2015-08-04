@@ -2,18 +2,7 @@
 class UnitTester
 {
 
-	public static function getInstance()
-	{
-		return new UnitTester(TestReporter::getInstance());
-	}
-	private $reporter;
-
-	private function __construct(TestReporter $reporter)
-	{
-		$this->reporter = $reporter;
-	}
-
-	private function value_output($data)
+	private static function value_output($data)
 	{
 		ob_start();
 		var_dump($data);
@@ -22,30 +11,30 @@ class UnitTester
 		return htmlspecialchars_decode(htmlspecialchars(trim($a), ENT_QUOTES));
 	}
 
-	public function assertEqual($expected, $actual)
+	public static function assertEqual($expected, $actual)
 	{
-		$this->reporter->trackTest();
-		return $this->_assertEqual($expected, $actual);
-	}
-	
-	public function assertTrue($actual)
-	{
-		return $this->assertEqual(true, $actual);
+		TestReporter::getInstance()->trackTest();
+		return UnitTester::_assertEqual($expected, $actual);
 	}
 
-	private function typesMatch($expected, $actual)
+	public function assertTrue($actual)
+	{
+		return TestReporter::getInstance()->assertEqual(true, $actual);
+	}
+
+	private static function typesMatch($expected, $actual)
 	{
 		$expectedType = gettype($expected);
 		$actualType = gettype($actual);
 		if($expectedType != $actualType)
 		{
-			$this->reporter->logFailure("Expected type was '" . $expectedType . "' but got '" . $actualType . "'");
+			TestReporter::getInstance()->logFailure("Expected type was '" . $expectedType . "' but got '" . $actualType . "'");
 			return false;
 		}
 		return true;
 	}
 
-	private function assertArrayEqual($expected, $actual)
+	private static function assertArrayEqual($expected, $actual)
 	{
 		$expectedArrayKeys = array_keys($expected);
 		$actualArrayKeys = array_keys($actual);
@@ -58,7 +47,7 @@ class UnitTester
 		$equal = true;
 		foreach ($expected as $expectedProperty => $expectedValue)
 		{
-			$equal = $this->_assertEqual($expected[$expectedProperty], $actual[$expectedProperty]);
+			$equal = UnitTester::_assertEqual($expected[$expectedProperty], $actual[$expectedProperty]);
 			if(!$equal)
 			{
 				return false;
@@ -67,54 +56,54 @@ class UnitTester
 		return true;
 	}
 
-	private function assertObjectEqual($expected, $actual)
+	private static function assertObjectEqual($expected, $actual)
 	{
 		// TODO: compare objects
 		return false;
 	}
 
-	private function assertPrimitiveEqual($expected, $actual)
+	private static function assertPrimitiveEqual($expected, $actual)
 	{
 		$result = $expected === $actual;
 		if(!$result)
 		{
-			$this->reporter->logFailure("Expected value was " . $this->value_output($expected) . " but got " . $this->value_output($actual));
+			TestReporter::getInstance()->logFailure("Expected value was " . UnitTester::value_output($expected) . " but got " . UnitTester::value_output($actual));
 		}
 		return $result;
 	}
 
-	private function _assertEqual($expected, $actual)
+	private static function _assertEqual($expected, $actual)
 	{
-		if(!$this->typesMatch($expected, $actual))
+		if(!UnitTester::typesMatch($expected, $actual))
 		{
 			return false;
 		}
 		if(is_array($expected))
 		{
-			return $this->assertArrayEqual($expected, $actual);
+			return UnitTester::assertArrayEqual($expected, $actual);
 		}
 		elseif(is_object($expected))
 		{
-			return $this->assertObjectEqual($expected, $actual);
+			return UnitTester::assertObjectEqual($expected, $actual);
 		}
 		else
 		{
-			return $this->assertPrimitiveEqual($expected, $actual);
+			return UnitTester::assertPrimitiveEqual($expected, $actual);
 		}
 	}
 
 	public function report()
 	{
-		echo $this->reporter->report();
+		echo TestReporter::getInstance()->report();
 	}
 
 	public function reportHTML()
 	{
-		echo $this->reporter->reportHTML();
+		echo TestReporter::getInstance()->reportHTML();
 	}
 
 	public function reset()
 	{
-		$this->reporter->reset();
+		TestReporter::getInstance()->reset();
 	}
 }
