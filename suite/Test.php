@@ -1,7 +1,6 @@
 <?php
-class UnitTester
+class Test
 {
-
 	private static function value_output($data)
 	{
 		ob_start();
@@ -14,7 +13,7 @@ class UnitTester
 	public static function assertEqual($expected, $actual)
 	{
 		TestReporter::getInstance()->trackTest();
-		return UnitTester::_assertEqual($expected, $actual);
+		return Test::_assertEqual($expected, $actual);
 	}
 
 	public function assertTrue($actual)
@@ -47,7 +46,7 @@ class UnitTester
 		$equal = true;
 		foreach ($expected as $expectedProperty => $expectedValue)
 		{
-			$equal = UnitTester::_assertEqual($expected[$expectedProperty], $actual[$expectedProperty]);
+			$equal = Test::_assertEqual($expected[$expectedProperty], $actual[$expectedProperty]);
 			if(!$equal)
 			{
 				return false;
@@ -67,28 +66,28 @@ class UnitTester
 		$result = $expected === $actual;
 		if(!$result)
 		{
-			TestReporter::getInstance()->logFailure("Expected value was " . UnitTester::value_output($expected) . " but got " . UnitTester::value_output($actual));
+			TestReporter::getInstance()->logFailure("Expected value was " . Test::value_output($expected) . " but got " . Test::value_output($actual));
 		}
 		return $result;
 	}
 
 	private static function _assertEqual($expected, $actual)
 	{
-		if(!UnitTester::typesMatch($expected, $actual))
+		if(!Test::typesMatch($expected, $actual))
 		{
 			return false;
 		}
 		if(is_array($expected))
 		{
-			return UnitTester::assertArrayEqual($expected, $actual);
+			return Test::assertArrayEqual($expected, $actual);
 		}
 		elseif(is_object($expected))
 		{
-			return UnitTester::assertObjectEqual($expected, $actual);
+			return Test::assertObjectEqual($expected, $actual);
 		}
 		else
 		{
-			return UnitTester::assertPrimitiveEqual($expected, $actual);
+			return Test::assertPrimitiveEqual($expected, $actual);
 		}
 	}
 
