@@ -1,6 +1,7 @@
 <?php
 class Test
 {
+
 	private static function value_output($data)
 	{
 		ob_start();
@@ -99,10 +100,5 @@ class Test
 	public function reportHTML()
 	{
 		echo TestReporter::getInstance()->reportHTML();
-	}
-
-	public function reset()
-	{
-		TestReporter::getInstance()->reset();
 	}
 }
