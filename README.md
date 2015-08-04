@@ -14,27 +14,21 @@ Create a test file (such as ExampleTest.php)
 <?php
 require_once "../PUnit.php";
 
-echo "--Tautology--\n";
+echo "Tautology: ";
 Test::assertTrue(true);
 Test::report();
 
-echo "--Multi with failure--\n";
+echo "Multi with failure: ";
 Test::assertEqual("abc", "123");
 Test::assertEqual(12.3, 12.3);
 Test::assertEqual(array("joe", "bloggs"), array("joe", "bloggs"));
 Test::report();
 
-echo "--Deep array failure--\n";
+echo "Deep array failure: ";
 $expected = array("data" => true, "structure" => array("top" => 123, "left" => "abc"));
 $actual = array("data" => true, "structure" => array("top" => 123, "left" => "abcde"));
 Test::assertEqual($expected, $actual);
 Test::report();
-
-echo "--HTML Report--\n";
-$expected = "bananas";
-$actual = "bananas";
-Test::assertEqual($expected, $actual);
-Test::reportHTML();
 ```
 
 ##Running a test
@@ -44,29 +38,7 @@ php ExampleTest.php
 
 Will output
 ```
---Tautology--
-Pass 1/1
---Multi with failure--
-Pass 2/3: Failure: Expected value was string(3) "abc" but got string(3) "123"
---Deep array failure--
-Pass 0/1: Failure: Expected value was string(3) "abc" but got string(5) "abcde"
---HTML Report--
-<style type="text/css">
-.test-result {
-	padding: 5px;
-	margin: 5px;
-	color: white;
-}
-
-.test-fail {
-	background-color: red;
-}
-
-.test-pass {
-	background-color: green;
-}
-</style>
-<div class="test-pass test-result">
-	Pass 1/1
-</div>
+Tautology: Pass 1/1
+Multi with failure: Pass 2/3: Failure: Expected value was string(3) "abc" but got string(3) "123"
+Deep array failure: Pass 0/1: Failure: Expected value was string(3) "abc" but got string(5) "abcde"
 ```

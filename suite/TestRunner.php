@@ -25,7 +25,7 @@ class TestRunner
 		}
 	}
 
-	public static function runAll()
+	public static function runAllHtml()
 	{
 		foreach (TestRunner::$collection as $classname => $testData)
 		{
@@ -44,6 +44,30 @@ class TestRunner
 				}
 			}
 			Test::reportHTML();
+		}
+		
+		TestRunner::reset();
+	}
+
+	public static function runAll()
+	{
+		foreach (TestRunner::$collection as $classname => $testData)
+		{
+			$testClass = new $classname();
+			echo $classname . ": ";
+			foreach ($testData["methods"] as $testMethod)
+			{
+				if($testData['setUp'])
+				{
+					$testClass->setUp();
+				}
+				$testClass->$testMethod();
+				if($testData['tearDown'])
+				{
+					$testClass->tearDown();
+				}
+			}
+			Test::report();
 		}
 		
 		TestRunner::reset();
