@@ -92,13 +92,19 @@ class Test
 		}
 	}
 
-	public function report()
+	public static function report()
 	{
 		echo TestReporter::getInstance()->report();
 	}
 
-	public function reportHTML()
+	public static function reportHTML()
 	{
 		echo TestReporter::getInstance()->reportHTML();
+	}
+
+	public static function end()
+	{
+		$exitCode = TestReporter::getInstance()->exitCode();
+		exit($exitCode);
 	}
 }

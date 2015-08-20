@@ -47,6 +47,7 @@ class TestRunner
 		}
 		
 		TestRunner::reset();
+		Test::end();
 	}
 
 	public static function runAll()
@@ -71,6 +72,7 @@ class TestRunner
 		}
 		
 		TestRunner::reset();
+		Test::end();
 	}
 
 	public static function reset()

@@ -6,6 +6,7 @@ class TestReporter
 	private $testsPass;
 	private $testsCalled;
 	private $testsFailed;
+	private $exitCode;
 
 	public static function getInstance()
 	{
@@ -83,10 +84,19 @@ class TestReporter
 		$this->testsPass = false;
 		$this->debugLog[] = $message;
 		$this->testsFailed++;
+		$this->exitCode = 1;
 	}
 
 	public function trackTest()
 	{
 		$this->testsCalled++;
+	}
+
+	public function exitCode()
+	{
+		$exitCode = $this->exitCode;
+		$this->exitCode = 0;
+		return $exitCode;
+		
 	}
 }

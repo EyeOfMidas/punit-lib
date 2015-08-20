@@ -16,3 +16,4 @@ $expected = array("data" => true, "structure" => array("top" => 123, "left" => "
 $actual = array("data" => true, "structure" => array("top" => 123, "left" => "abcde"));
 Test::assertEqual($expected, $actual);
 Test::report();
+Test::end();
