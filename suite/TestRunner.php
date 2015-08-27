@@ -24,6 +24,19 @@ class TestRunner
 			}
 		}
 	}
+	
+	public static function addTestDirectory($directory, $postfix, $extension)
+	{
+		$contents = scandir($directory);
+		foreach ($contents as $filename)
+		{
+			if(stristr($filename, $postfix . $extension))
+			{
+				$classname = str_replace($extension, "", $filename);
+				TestRunner::addTestClass($classname);
+			}
+		}
+	}
 
 	public static function runAllHtml()
 	{
