@@ -43,9 +43,10 @@ class TestRunner
 		foreach (TestRunner::$collection as $classname => $testData)
 		{
 			$testClass = new $classname();
-			echo "<h3>" . $classname . "</h3>\n";
+			Test::setClassname($classname);
 			foreach ($testData["methods"] as $testMethod)
 			{
+				Test::setMethodname($testMethod);
 				if($testData['setUp'])
 				{
 					$testClass->setUp();
@@ -68,9 +69,10 @@ class TestRunner
 		foreach (TestRunner::$collection as $classname => $testData)
 		{
 			$testClass = new $classname();
-			echo $classname . ": ";
+			Test::setClassname($classname);
 			foreach ($testData["methods"] as $testMethod)
 			{
+				Test::setMethodname($testMethod);
 				if($testData['setUp'])
 				{
 					$testClass->setUp();

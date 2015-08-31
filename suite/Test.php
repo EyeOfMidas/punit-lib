@@ -1,7 +1,10 @@
 <?php
 class Test
 {
-
+	
+	private static $classname;
+	private static $methodname;
+	
 	private static function value_output($data)
 	{
 		ob_start();
@@ -26,6 +29,11 @@ class Test
 	{
 		return Test::assertEqual(false, $actual);
 	}
+	
+	private static function logFailure($message)
+	{
+		TestReporter::getInstance()->logFailure(Test::$methodname . ": " . $message);
+	}
 
 	private static function typesMatch($expected, $actual)
 	{
@@ -33,7 +41,7 @@ class Test
 		$actualType = gettype($actual);
 		if($expectedType != $actualType)
 		{
-			TestReporter::getInstance()->logFailure("Expected type was '" . $expectedType . "' but got '" . $actualType . "'");
+			Test::logFailure("Expected type was '" . $expectedType . "' but got '" . $actualType . "'");
 			return false;
 		}
 		return true;
@@ -45,7 +53,7 @@ class Test
 		$actualArrayKeys = array_keys($actual);
 		if($expectedArrayKeys != $actualArrayKeys)
 		{
-			$this->reporter->logFailure("Expected keys were " . $this->value_output($expectedArrayKeys) . " but got " . $this->value_output($actualArrayKeys));
+			Test::logFailure("Expected keys were " . Test::value_output($expectedArrayKeys) . " but got " . Test::value_output($actualArrayKeys));
 			return false;
 		}
 		
@@ -72,7 +80,7 @@ class Test
 		$result = $expected === $actual;
 		if(!$result)
 		{
-			TestReporter::getInstance()->logFailure("Expected value was " . Test::value_output($expected) . " but got " . Test::value_output($actual));
+			Test::logFailure("Expected value was " . Test::value_output($expected) . " but got " . Test::value_output($actual));
 		}
 		return $result;
 	}
@@ -96,14 +104,26 @@ class Test
 			return Test::assertPrimitiveEqual($expected, $actual);
 		}
 	}
+	
+	public static function setClassname($classname)
+	{
+		Test::$classname = $classname;
+	}
+	
+	public static function setMethodname($methodname)
+	{
+		Test::$methodname = $methodname;
+	}
 
 	public static function report()
 	{
+		echo Test::$classname . ": ";
 		echo TestReporter::getInstance()->report();
 	}
-
+	
 	public static function reportHTML()
 	{
+		echo "<h3>" . Test::$classname . "</h3>\n";
 		echo TestReporter::getInstance()->reportHTML();
 	}
 

@@ -67,7 +67,23 @@ class TestReporter
 		$reportData['successtag'] = "test-pass";
 		$reportData['failtag'] = "test-fail";
 		$reportData['resulttag'] = $class;
-		$reportData['message'] = trim($this->report());
+		
+		$output = "";
+		if($this->testsPass)
+		{
+			$output .= "Pass " . $this->testsCalled . "/" . $this->testsCalled . "\n";
+		}
+		else
+		{
+			$output .= "Pass " . ($this->testsCalled - $this->testsFailed) . "/" . $this->testsCalled . ": Failure: ";
+			foreach ($this->debugLog as $log)
+			{
+				$output .= $log;
+				$output .= "<br />\n";
+			}
+		}
+		$this->reset();
+		$reportData['message'] = trim($output) . "\n";
 		
 		$patterns = array();
 		$replacements = array();
@@ -97,6 +113,5 @@ class TestReporter
 		$exitCode = $this->exitCode;
 		$this->exitCode = 0;
 		return $exitCode;
-		
 	}
 }
