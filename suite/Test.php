@@ -21,6 +21,11 @@ class Test
 	{
 		return Test::assertEqual(true, $actual);
 	}
+	
+	public function assertFalse($actual)
+	{
+		return Test::assertEqual(false, $actual);
+	}
 
 	private static function typesMatch($expected, $actual)
 	{
